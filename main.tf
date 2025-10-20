@@ -15,7 +15,11 @@ resource "aws_instance" "nginx-server" {
   ami           = "ami-0199d4b5b8b4fde0e"
   instance_type = "t3.micro"
   tags = {
-    Name = "NginxServer"
+    Name        = "nginx-server"
+    Environment = "nginx-server"
+    Owner       = "jelsync@gmail.com"
+    Team        = "DevOps"
+    Project     = "TESTING"
   }
 
   user_data = <<-EOF
@@ -33,6 +37,13 @@ resource "aws_instance" "nginx-server" {
 resource "aws_key_pair" "nginx-server-ssh" {
   key_name   = "nginx-server-key"
   public_key = file("nginx-server.key.pub")
+  tags = {
+    Name        = "nginx-server-ssh"
+    Environment = "nginx-server"
+    Owner       = "jelsync@gmail.com"
+    Team        = "DevOps"
+    Project     = "TESTING"
+  }
 
 }
 
