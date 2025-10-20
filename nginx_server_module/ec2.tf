@@ -2,8 +2,8 @@ resource "aws_instance" "nginx-server" {
   ami           = var.ami_id
   instance_type = var.instance_type
   tags = {
-    Name        = "var.server_name"
-    Environment = "var.environment"
+    Name        = var.server_name
+    Environment = var.environment
     Owner       = "jelsync@gmail.com"
     Team        = "DevOps"
     Project     = "TESTING"
