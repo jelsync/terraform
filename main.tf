@@ -8,19 +8,17 @@ terraform {
 }
 
 provider "aws" {
-    region      = "us-east-2"
-    access_key  = ""
-    secret_key  =  ""
+  region     = "us-east-2"
 }
 
 resource "aws_instance" "nginx-server" {
-    ami   = "ami-0199d4b5b8b4fde0e"
-    instance_type = "t3.micro"
-    tags = {
-        Name = "NginxServer"
-    }
+  ami           = "ami-0199d4b5b8b4fde0e"
+  instance_type = "t3.micro"
+  tags = {
+    Name = "NginxServer"
+  }
 
-    user_data = <<-EOF
+  user_data = <<-EOF
               #!/bin/bash
               sudo yum install -y nginx
               sudo systemctl enable nginx
@@ -28,13 +26,14 @@ resource "aws_instance" "nginx-server" {
               echo "<h1>Hello from Terraform!</h1>" > /var/www/html/index.html
               EOF
 
-    key_name = aws_key_pair.nginx-server-ssh.key_name
+  key_name               = aws_key_pair.nginx-server-ssh.key_name
+  vpc_security_group_ids = [aws_security_group.nginx-server-sg.id]
 }
 
 resource "aws_key_pair" "nginx-server-ssh" {
-    key_name   = "nginx-server-key"
-    public_key = file("nginx-server.key.pub")
-  
+  key_name   = "nginx-server-key"
+  public_key = file("nginx-server.key.pub")
+
 }
 
 
@@ -55,19 +54,19 @@ resource "aws_security_group" "nginx-server-sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
     Name        = "nginx-server-sg"
     Environment = "nginx-server"
-    Owner       = "ariel.molina@caosbinario.com"
+    Owner       = "jelsync@gmail.com"
     Team        = "DevOps"
-    Project     = "webinar"
+    Project     = "TESTING"
   }
 }
