@@ -56,33 +56,13 @@ Backend S3 — atención a la región
 - Asegúrate de que `main.tf` (backend "s3") usa la región correcta del bucket. Si el bucket está en `eu-central-1`, cambia `region` a `eu-central-1`.
 - Para reconfigurar el backend:
 ```powershell
-cd c:\Fuentes\DevOps\Terraform\TerraformTestYT\terraform
 terraform init -reconfigure -backend-config="profile=personal"
 # o especifica region si es necesario:
 terraform init -reconfigure -backend-config="profile=personal" -backend-config="region=eu-central-1"
 ```
 
-Flujo de trabajo (comandos)
-```powershell
-cd c:\Fuentes\DevOps\Terraform\TerraformTestYT\terraform
-terraform init -reconfigure -backend-config="profile=personal"
-terraform validate
-terraform plan -out plan.tfplan
-terraform apply "plan.tfplan"
-```
-
 Outputs
 - El módulo exporta la IP pública y DNS de la instancia (`server_public_ip`, `server_public_dns`).
-
-Seguridad — acciones urgentes
-- Revoca/rota inmediatamente cualquier access key que haya estado en el repositorio.
-- Elimina archivos que contengan credenciales:
-```powershell
-git rm --cached "ruta/al/archivo-con-secretos"
-git commit -m "Remove secrets"
-git push
-```
-- Si es necesario eliminar del historial, usa herramientas como BFG o git filter-repo.
 
 Errores comunes y soluciones rápidas
 - "No valid credential sources found" → Asegúrate de que AWS_PROFILE o variables de entorno estén activas en la sesión, o pon `profile = "personal"` en `providers.tf`.
@@ -92,8 +72,3 @@ Errores comunes y soluciones rápidas
 aws sso login --profile personal
 $env:AWS_PROFILE = "personal"
 ```
-
-Notas finales
-- No dejar claves en los ficheros del repo.
-- Mantener provider en la raíz, no en módulos.
-- Si necesitas, puedo generar un archivo providers.tf o ayudarte a purgar el historial git.
