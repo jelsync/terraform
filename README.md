@@ -36,7 +36,6 @@ $env:AWS_PROFILE = "personal"
 Proveedor recomendado (archivo raíz)
 - Crea `providers.tf` en la raíz del directorio terraform para usar el perfil:
 ```hcl
-// filepath: c:\Fuentes\DevOps\Terraform\TerraformTestYT\terraform\providers.tf
 terraform {
   required_providers {
     aws = {
@@ -54,12 +53,6 @@ provider "aws" {
 
 Backend S3 — atención a la región
 - Asegúrate de que `main.tf` (backend "s3") usa la región correcta del bucket. Si el bucket está en `eu-central-1`, cambia `region` a `eu-central-1`.
-- Para reconfigurar el backend:
-```powershell
-terraform init -reconfigure -backend-config="profile=personal"
-# o especifica region si es necesario:
-terraform init -reconfigure -backend-config="profile=personal" -backend-config="region=eu-central-1"
-```
 
 Outputs
 - El módulo exporta la IP pública y DNS de la instancia (`server_public_ip`, `server_public_dns`).
